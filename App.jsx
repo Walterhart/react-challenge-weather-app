@@ -1,4 +1,6 @@
 import React from "react"
+import weatherData from "./weatherData"
+import Weather from "./Weather"
 
 /* Challenge
 
@@ -21,49 +23,19 @@ The weather data is currently hardcoded into the JSX. Your task is to insert it 
 */
 
 export default function App() {
+    
+  const [currentWeather, setCurrentWeather] = React.useState(weatherData[0])
   
-  const weatherData = [
-    {
-      id: 0,
-      day: "Monday",
-      condition: "Sunny",
-      lowTemp: 20,
-      highTemp: 38
-    },
-    {
-      id: 1,
-      day: "Tuesday",
-      condition: "Rainy",
-      lowTemp: 8,
-      highTemp: 15
-    },
-    {
-      id: 2,
-      day: "Wednesday",
-      condition: "Snowy",
-      lowTemp: -5,
-      highTemp: 3
-    }
-  ]
+  function changeWeather(){
+    const currentIndex = weatherData.findIndex(weather => weather.id === currentWeather.id)
+    const nextIndex =( currentIndex + 1) % weatherData.length
+    setCurrentWeather(weatherData[nextIndex])
+  }
   
   return (
-    <div className="app-container sunny-background"> 
-      <div className="weather-container">
-        <div className="icon">☀️</div>
-        <div className="condition-text">Sunny</div>
-        <div className="temp-range-container">
-            <div className="low-temp-container">
-              <p className="low-temp-data">20°</p>
-              <p>Low</p>
-            </div>
-            <div className="high-temp-container">
-              <p className="high-temp-data">38°</p>
-              <p>High</p>
-            </div>
-        </div>
-        <div className="day">Monday</div>
-      </div>
-      <button>Test</button>
+    <div className={`app-container ${currentWeather.condition.toLowerCase()}-background`}> 
+      <Weather currentWeather={currentWeather}/>
+      <button onClick={changeWeather}>Test</button>
     </div>
   )
 }
